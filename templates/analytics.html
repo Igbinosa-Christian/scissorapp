@@ -52,7 +52,7 @@
         <div class="displayLinks">
             <div>
               <label for="shortUrl">Short Url</label>
-              <input name="shortUrl" class="input" type="text"  value="https://scissorapp.onrender.com/{{link.shortUrl}}">
+              <input name="shortUrl" class="input" type="text"  value="scissorapp.onrender.com/{{link.shortUrl}}">
               <!-- http://127.0.0.1:5000/ For local testing -->
             </div>
   
@@ -66,11 +66,6 @@
           <p>
             Date Created {{link['dateCreated'].strftime('%d/%b/%Y')}}
           </p>
-
-          <div>
-            <img src="{{ url_for('static', filename=imgName) }}">
-          </div>
-        </div>
 
       </div>
 

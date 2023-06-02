@@ -263,7 +263,9 @@ def dashboard():
             imgName = f"{secrets.token_hex(8)}.png" 
             imgLocation = f"{application.config['UPLOAD_PATH']}/{imgName}"
 
-            myQrCode = qrcode.make(originalUrl)
+            fullShortUrl = f"scissorapp.onrender.com/{shortUrl}"
+
+            myQrCode = qrcode.make(fullShortUrl)
             myQrCode.save(imgLocation)
 
             link = Link(
