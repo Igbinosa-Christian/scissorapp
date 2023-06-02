@@ -22,35 +22,35 @@ base_dir = os.path.dirname(os.path.realpath(__file__))
 
 
 # Create a flask instance
-app=Flask(__name__)
+application=Flask(__name__)
 
 
 # Limiter instance
 limiter = Limiter(
     get_remote_address,
-    app=app
+    app=application
 )
 
 
 # Database Configurations
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+application.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 # 'sqlite:///' + os.path.join(base_dir, 'db.sqlite3') For local database
 # postgres://scissorapp_user:nEmswa1FHRZpnbPzr3HrhFyU7r45o19R@dpg-cht5j95269vccp3kds40-a.oregon-postgres.render.com/scissorapp
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY']='d264032a74d1555a05942698'
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+application.config['SECRET_KEY']='d264032a74d1555a05942698'
 
 
 # Config to store img to static
-app.config.update(UPLOAD_PATH=os.path.join(base_dir, 'static'))
+application.config.update(UPLOAD_PATH=os.path.join(base_dir, 'static'))
 
 
 # Create an instance of sqlalchemy
-db=SQLAlchemy(app)
+db=SQLAlchemy(application)
 
 
 # to allow us connect to the database to create and do migration in the shell
-@app.shell_context_processor
+@application.shell_context_processor
 def make_shell_context():
     return {
         'db': db,
@@ -59,14 +59,14 @@ def make_shell_context():
 
 
 # Initialize the app database
-db.init_app(app)
+db.init_app(application)
 
 # to allow easy update of database
-migrate = Migrate(app, db)
+migrate = Migrate(application, db)
 
 
 #LoginManager Instance
-login_manager=LoginManager(app) 
+login_manager=LoginManager(application) 
 
 
 # Link Model
@@ -110,7 +110,7 @@ class User(db.Model,UserMixin):
 
 
 #LoginManager Instance
-login_manager=LoginManager(app) 
+login_manager=LoginManager(application) 
 login_manager.login_view='login'
 
 
@@ -122,7 +122,7 @@ def user_loader(id):
 
 
 # Home page route
-@app.route('/', methods = ['GET','POST'])
+@application.route('/', methods = ['GET','POST'])
 def index():
     
     return render_template('index.html')
@@ -130,7 +130,7 @@ def index():
 
 
 # Signup Route
-@app.route('/register', methods=['GET','POST'])
+@application.route('/register', methods=['GET','POST'])
 def register():
     
     if request.method == 'POST':
@@ -176,7 +176,7 @@ def register():
 
 
 # Login Route
-@app.route('/login', methods=['GET', 'POST'])
+@application.route('/login', methods=['GET', 'POST'])
 def login():
 
     if request.method == 'POST':
@@ -207,7 +207,7 @@ def login():
 
 # Route to logout
 @login_required
-@app.route('/logout')
+@application.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
@@ -226,7 +226,7 @@ def generate_short_link():
 
 # Dashboard page route
 @login_required
-@app.route('/dashboard', methods=['GET', 'POST'])
+@application.route('/dashboard', methods=['GET', 'POST'])
 @limiter.limit('10 per day')
 def dashboard():
 
@@ -262,7 +262,7 @@ def dashboard():
 
         else:
             imgName = f"{secrets.token_hex(8)}.png" 
-            imgLocation = f"{app.config['UPLOAD_PATH']}/{imgName}"
+            imgLocation = f"{application.config['UPLOAD_PATH']}/{imgName}"
 
             myQrCode = qrcode.make(originalUrl)
             myQrCode.save(imgLocation)
@@ -306,7 +306,7 @@ def printDetails(ip):
 
 
 # Route to direct short url to original
-@app.route('/<shortUrl>')
+@application.route('/<shortUrl>')
 def redirect_to_url(shortUrl):
     ip = get_visitor_ip()
     location = printDetails(ip)
@@ -340,7 +340,7 @@ def redirect_to_url(shortUrl):
 
 # Route to view user link history
 @login_required
-@app.route('/history/<string:user>')
+@application.route('/history/<string:user>')
 def history(user):
     
     links = Link.query.filter_by(user=user).all()
@@ -351,7 +351,7 @@ def history(user):
 
 # Route to view link analytics
 @login_required
-@app.route('/analytics/<int:id>/', methods=['GET'])
+@application.route('/analytics/<int:id>/', methods=['GET'])
 def analytics(id):
     
     link = Link.query.get_or_404(id)
@@ -369,7 +369,7 @@ def analytics(id):
 
 # Route to delete link
 @login_required
-@app.route('/delete/<int:id>/', methods=['GET'])
+@application.route('/delete/<int:id>/', methods=['GET'])
 def delete(id):
     linkToDelete=Link.query.get_or_404(id)
 
@@ -395,4 +395,4 @@ def delete(id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    application.run(debug=True)
