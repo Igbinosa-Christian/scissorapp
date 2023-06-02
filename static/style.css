@@ -1,0 +1,144 @@
+#pink-navbar{
+    background-color: #f15483;
+}
+
+#navItems a{
+    font-weight: bolder;  
+}
+
+/* make the text area beautiful */
+#text-area{
+    padding-top: 7%;
+    text-align: center;
+}
+
+p{
+    font-weight: bold;
+}
+
+
+#text-area button{
+    background-color: #f15483;
+}
+
+
+#text-area input{
+    margin-bottom: 20px;
+}
+
+
+#scissor-icon{
+    font-size: 300px;
+    color: #f15483;
+    padding-left: 100px;
+}
+
+#link{
+    height: 80px;
+    padding-bottom: 7%;
+    font-size: bold;
+    color: black;
+}
+
+#link button{
+    font-size: bold;
+    color: black;
+}
+
+.heading{
+    text-align: center;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+
+#login, #posts, #signup, #logout{
+    margin-left: 20px;
+    margin-right: 10px;
+    font-weight: bold;
+ }
+ 
+ h3{
+     text-align: center;
+     padding-top: 28px;
+ }
+ 
+ .row div{
+     padding-top: 50px;
+     font-weight: bold;
+ }
+ 
+ #submit{
+     text-align: center;
+     margin-top: 20px;
+ }
+ 
+ .form_q{
+     text-align: center;
+     font-weight: bold;
+     font-size: small;
+     margin-top: 20px;
+ }
+ 
+ .top{
+     display: flex;
+ }
+
+ .regBtn, .logBtn{
+    color: black;
+    background-color: #f15483;
+    height: 40px;
+    width: 80px;
+    border: none;
+    text-decoration: none;
+    border-radius: 8px;
+ }
+
+.displayLinks{
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+
+.displayLinks input{
+    width: 300px;
+}
+
+.displayLinks div{
+    margin-bottom: 20px;
+}
+
+
+.downloadBtn button{
+    margin-top: 10px;
+    text-align: center;
+    background-color: #f15483;
+    height: 40px;
+    width: 100px;
+    border: none;
+    border-radius: 8px;
+}
+
+.downloadBtn a{
+    text-decoration: none;
+    color: black;
+}
+
+img{
+    height: 200px;
+}
+
+table input{
+    border: none;
+}
+
+
+.welcome{
+    text-align: left;
+}
+
+
+#area{
+    text-align: center;
+}
+

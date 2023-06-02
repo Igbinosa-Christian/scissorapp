@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Linking Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <!-- Linking Static CSS File -->
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+
+     <!-- Linking Font Awesome -->
+    <script src="https://kit.fontawesome.com/66259e35b8.js" crossorigin="anonymous"></script>
+
+
+    <title>Scissor</title>
+  </head>
+
+
+  <body>
+
+    <!-- For Authenticated Users -->
+    {%if current_user.is_authenticated%}
+
+    <nav class="navbar navbar-expand-lg navbar-light" id="pink-navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Scissor</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!--Create a navigation bar with items on the left and right side.-->
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav ms-auto" id="navItems">
+            <a class="nav-link" href="/history/{{current_user.username}}">HISTORY</a>
+            <a class="nav-link" href="/logout">LOGOUT</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Adding Flash messages to front-end -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+
+    {%if messages%}
+
+       {%for category, message in messages%}
+
+           {%if category == 'error'%}
+
+               <div class="alert alert-danger alter-dismissible fade show" role="alert">
+                   {{message}}
+                   <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+               </div>
+
+           {%else%}
+
+                <div class="alert alert-success alter-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+           {%endif%}
+
+       {%endfor%}
+
+    {%endif%}
+    {% endwith %}
+
+    <div class="container" id="text-area">
+      
+      <div id="link">
+        <form action="" method="POST">
+          <div class="input-group">
+            <input type="url" class="form-control" placeholder="LINK TO SHORTEN" name="originalUrl" required>
+            <div class="input-group-append">
+              <button class="btn" type="submit">Shorten</button>
+            </div>
+          </div>
+
+          <input type="text" class="form-control" placeholder="CUSTOM LINK NAME(OPTIONAL)" name="customAlias">
+        </form>
+      </div>
+
+      <div class="displayLinks">
+          <div>
+            <label for="shortUrl">Short Url</label>
+            <input name="shortUrl" class="input" type="text"  value="http://127.0.0.1:5000/{{shortUrl}}">
+          </div>
+
+          <div>
+            <label for="originalUrl">Original Url</label>
+            <input name="originalUrl" class="input" type="text"  value="{{originalUrl}}">
+          </div>
+      </div>
+
+      <div>
+        <img src="{{ url_for('static', filename=imgName) }}">
+      </div>
+
+      <div class="downloadBtn">
+        <button>
+          <a href="{{url_for('static', filename=imgName)}}" download="qrcode image">Download</a>
+        </button>
+      </div>
+    </div>
+
+
+    {%endif%}
+    
+
+    <!-- Linking Bootsrap Js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+  </body>
+</html>

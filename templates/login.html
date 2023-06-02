@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Linking Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <!-- Linking Static CSS File -->
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+
+     <!-- Linking Font Awesome -->
+    <script src="https://kit.fontawesome.com/66259e35b8.js" crossorigin="anonymous"></script>
+
+
+    <title>Scissor</title>
+  </head>
+
+
+  <body>
+
+    <div class="container">
+
+    <!-- Adding Flash messages to front-end -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+
+    {%if messages%}
+
+       {%for category, message in messages%}
+
+           {%if category == 'error'%}
+
+               <div class="alert alert-danger alter-dismissible fade show" role="alert">
+                   {{message}}
+                   <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+               </div>
+
+           {%else%}
+
+                <div class="alert alert-success alter-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+           {%endif%}
+
+       {%endfor%}
+
+    {%endif%}
+
+    {% endwith %}
+      <div>
+        <h3>LOGIN</h3>
+    </div>
+
+    <form action="{{url_for('login')}}" method="POST">
+        <div class="row">
+          <div class="col">
+            <label for="username">Username</label>
+            <input name="username" type="text" class="form-control" placeholder="Username" required>
+          </div>
+
+          <div class="col">
+            <label for="password">Password</label>
+            <input name="password" type="password" class="form-control" placeholder="Password" required>
+          </div>
+        </div>
+
+        
+        <div class="container">
+            <div class="col-md-12 text-center">
+                <input id="submit" type="submit" class="logBtn" value="LOGIN">
+            </div>
+        </div>
+    </form>
+
+    <p class="form_q">Don't have an account? <a href="/signup">SIGNUP NOW</a></p>
+    </div>
+
+    <!-- Linking Bootsrap Js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+  </body>
+</html>
