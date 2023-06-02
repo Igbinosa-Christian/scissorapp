@@ -73,7 +73,7 @@ class Link(db.Model):
     id=db.Column(db.Integer(),primary_key=True)
     user=db.Column(db.String(150),nullable=False)
     originalUrl = db.Column(db.String(512))
-    shortUrl = db.Column(db.String(50), unique=True)
+    shortUrl = db.Column(db.String(512), unique=True)
     visits = db.Column(db.Integer, default=0)
     dateCreated = db.Column(db.DateTime, default=datetime.now)
     imgName = db.Column(db.String(50))
