@@ -35,8 +35,7 @@ limiter = Limiter(
 # Database Configurations
 application.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 # 'sqlite:///' + os.path.join(base_dir, 'db.sqlite3') For local database
-# postgres://scissorapp_user:nEmswa1FHRZpnbPzr3HrhFyU7r45o19R@dpg-cht5j95269vccp3kds40-a.oregon-postgres.render.com/scissorapp
-
+# postgres://scissorapp_4yk6_user:NaIg3nTMjPw2J5RSHhsrxgb5eaGgHZpd@dpg-cht7h5d269vccp3vt650-a.oregon-postgres.render.com/scissorapp_4yk6
 application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 application.config['SECRET_KEY']='d264032a74d1555a05942698'
 
@@ -77,7 +76,7 @@ class Link(db.Model):
     shortUrl = db.Column(db.String(50), unique=True)
     visits = db.Column(db.Integer, default=0)
     dateCreated = db.Column(db.DateTime, default=datetime.now)
-    imgName = db.Column(db.String(15))
+    imgName = db.Column(db.String(50))
     visitLocations = db.relationship('VisitLocation', backref='link')
 
 
