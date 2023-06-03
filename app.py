@@ -35,7 +35,7 @@ limiter = Limiter(
     app=application,
     storage_uri="redis://red-chtkn45269vccp6lil8g:6379",
     storage_options={
-        'redis': redis_client
+        'connection_pool': redis_client.connection_pool
     }
 )
 
