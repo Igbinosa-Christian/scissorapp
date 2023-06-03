@@ -262,7 +262,7 @@ def dashboard(username):
         checkLink = Link.query.filter_by(shortUrl=shortUrl).filter_by(user=current_user.username).first()
         if checkLink:
             flash(f"Custom Url {shortUrl} already exists.", category='error')
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('dashboard', username=user.username))
 
 
         # Check if Url has been shortened by user
@@ -322,7 +322,7 @@ def printDetails(ip):
 # Route to direct short url to original
 @application.route('/<shortUrl>')
 def redirect_to_url(shortUrl):
-    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    ip = get_visitor_ip()
     location = printDetails(ip)
 
     # time link was visited
@@ -349,9 +349,6 @@ def redirect_to_url(shortUrl):
         
     link.visits = link.visits + 1
     db.session.commit()
-
-    print(ip)
-
     
     return redirect(link.originalUrl) 
 
@@ -402,7 +399,7 @@ def delete(id):
         db.session.commit() 
 
         flash("LINK DELETED", category='error')
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('dashboard', username=linkToDelete.user))
 
     else:
         flash("CANNOT DELETE ANOTHER USER'S LINK", category='error') 
