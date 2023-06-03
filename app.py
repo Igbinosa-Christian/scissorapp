@@ -322,7 +322,7 @@ def printDetails(ip):
 # Route to direct short url to original
 @application.route('/<shortUrl>')
 def redirect_to_url(shortUrl):
-    ip = request.remote_addr
+    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
     location = printDetails(ip)
 
     # time link was visited
