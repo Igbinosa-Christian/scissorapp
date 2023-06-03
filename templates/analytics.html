@@ -26,10 +26,14 @@
 
   <body>
 
+    <!-- For Authenticated Users -->
+    {%if current_user.is_authenticated%}
+
+
     <!--Create a responsive navigation bar with pink background color and items on the left and right side.-->
     <nav class="navbar navbar-expand-lg navbar-light" id="pink-navbar">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Scissor</a>
+        <a class="navbar-brand" href="/history/{{current_user.username}}">Back</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -39,12 +43,11 @@
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <!-- <span class="navbar-toggler-icon"></span> -->
         </button>
 
       </div>
     </nav>
-
 
     <!-- create a responsive text area -->
     <div class="container" id="area">
@@ -52,7 +55,7 @@
         <div class="displayLinks">
             <div>
               <label for="shortUrl">Short Url</label>
-              <input name="shortUrl" class="input" type="text"  value="scissorapp.onrender.com/{{link.shortUrl}}">
+              <input name="shortUrl" class="input" type="text"  value="{{shortUrl}}">
               <!-- http://127.0.0.1:5000/ For local testing -->
             </div>
   
@@ -69,18 +72,26 @@
 
       </div>
 
-      <div>
-        <img src="{{ url_for('static', filename=imgName) }}">
-      </div>
-
         
         <div class="container" id="area">
 
             <p>Total Visits - {{link.visits}}</p>
+            
+            <table class="table">
+              <thead>
+                <th>Location</th>
+                <th>Device</th>
+                <th>Date and Time</th>
+              </thead>
             {% for data in visitData%}
-            <div>
-                <p>{{data.location}} - {{data.numberOfVisits}}</p>
-            </div>
+              <tbody>
+                <td>{{data.location}}</td>
+                <td>{{data.device}}</td>
+                <td>{{data.dateOfVisit}}</td>
+              </tbody>
+            </table>
+
+
             {% endfor %}
 
 
@@ -90,6 +101,12 @@
 
         </div>
     </div>
+
+    {%else%}
+
+    <div>YOU NEED TO BE LOGGED IN</div>
+
+    {%endif%}
     
     
 

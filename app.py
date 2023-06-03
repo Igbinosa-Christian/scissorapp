@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect,flash,url_for
+from flask import Flask,render_template,request,redirect,flash,url_for,jsonify
 from flask_migrate import Migrate
 from sqlalchemy import JSON, PickleType
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -15,6 +15,7 @@ from ip2geotools.databases.noncommercial import DbIpCity
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from redis import Redis
+from user_agents import parse
 
 
 
@@ -92,7 +93,8 @@ class VisitLocation(db.Model):
     id=db.Column(db.Integer(),primary_key=True)
     location = db.Column(db.String(150))
     link_id = db.Column(db.Integer, db.ForeignKey('link.id'))
-    numberOfVisits = db.Column(db.Integer, default=0)
+    dateOfVisit = db.Column(db.DateTime)
+    device = db.Column(db.String(200))
 
 
     
@@ -206,7 +208,7 @@ def login():
             login_user(user)
             
 
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('dashboard', username=user.username))
 
     return render_template('login.html')
 
@@ -232,9 +234,13 @@ def generate_short_link():
 
 # Dashboard page route
 @login_required
-@application.route('/dashboard', methods=['GET', 'POST'])
+@application.route('/dashboard/<string:username>', methods=['GET', 'POST'])
 @limiter.limit('10 per day')
-def dashboard():
+def dashboard(username):
+
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        return jsonify({'error': 'Error message'}), 404
 
     originalUrl = ""
     shortUrl = ""
@@ -291,7 +297,7 @@ def dashboard():
             db.session.commit()
      
     
-    return render_template('dashboard.html', originalUrl=originalUrl, shortUrl=shortUrl, imgName=imgName, imgLocation=imgLocation)
+    return render_template('dashboard.html', originalUrl=originalUrl, shortUrl=f"scissorapp.onrender.com/{shortUrl}", imgName=imgName, imgLocation=imgLocation)
 
 
 # Get ip address
@@ -316,33 +322,35 @@ def printDetails(ip):
 # Route to direct short url to original
 @application.route('/<shortUrl>')
 def redirect_to_url(shortUrl):
-    ip = get_visitor_ip()
+    ip = request.remote_addr
     location = printDetails(ip)
+
+    # time link was visited
+    rawTime = datetime.now()
+    time = rawTime.strftime("%d/%m/%Y %H:%M:%S")
+
+    # device that visited link
+    user_agent_string = request.headers.get('User-Agent')
+    device = str(parse(user_agent_string))
     
 
     link = Link.query.filter_by(shortUrl=shortUrl).first_or_404()
 
-    visitBefore = VisitLocation.query.filter_by(location=location).filter_by(link_id=link.id).first()
+    newVisit = VisitLocation(
+        location=location,
+        link_id=link.id,
+        dateOfVisit = time,
+        device = device
+    )
 
-    if visitBefore:
-        visitBefore.numberOfVisits = visitBefore.numberOfVisits + 1
-        db.session.commit()
-
-    else:
-        newVisit = VisitLocation(
-            location=location,
-            link_id=link.id,
-            numberOfVisits=1
-        )
-
-        db.session.add(newVisit)
-        db.session.commit()
+    db.session.add(newVisit)
+    db.session.commit()
 
         
     link.visits = link.visits + 1
     db.session.commit()
 
-
+    
     return redirect(link.originalUrl) 
 
 
@@ -352,7 +360,6 @@ def redirect_to_url(shortUrl):
 def history(user):
     
     links = Link.query.filter_by(user=user).all()
-
 
     return render_template('history.html', links=links)
 
@@ -370,7 +377,7 @@ def analytics(id):
 
 
 
-    return render_template('analytics.html', link=link, imgName=imgName, visitData=visitData)
+    return render_template('analytics.html', link=link, imgName=imgName, visitData=visitData, shortUrl =  f"scissorapp.onrender.com/{link.shortUrl}")
 
 
 
