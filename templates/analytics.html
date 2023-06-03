@@ -79,15 +79,19 @@
             
             <table class="table">
               <thead>
-                <th>Location</th>
-                <th>Device</th>
-                <th>Date and Time</th>
+                <tr>
+                    <th>Location</th>
+                    <th>Device</th>
+                    <th>Date and Time</th>
+                </tr>
               </thead>
             {% for data in visitData%}
               <tbody>
-                <td>{{data.location}}</td>
-                <td>{{data.device}}</td>
-                <td>{{data.dateOfVisit}}</td>
+                <tr>
+                    <td>{{data.location}}</td>
+                    <td>{{data.device}}</td>
+                    <td>{{data.dateOfVisit}}</td>
+                </tr>
               </tbody>
             </table>
 
