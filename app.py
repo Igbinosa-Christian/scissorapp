@@ -14,6 +14,7 @@ import requests
 from ip2geotools.databases.noncommercial import DbIpCity
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from redis import Redis
 
 
 
@@ -24,18 +25,24 @@ base_dir = os.path.dirname(os.path.realpath(__file__))
 # Create a flask instance
 application=Flask(__name__)
 
+# Configure redis server
+redis_client = Redis(host='red-chtkn45269vccp6lil8g', port=6379)
+
 
 # Limiter instance
 limiter = Limiter(
     get_remote_address,
-    app=application
+    app=application,
+    storage_uri="redis://red-chtkn45269vccp6lil8g:6379",
+    storage_options={
+        'redis': redis_client
+    }
 )
 
 
 # Database Configurations
 application.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 # 'sqlite:///' + os.path.join(base_dir, 'db.sqlite3') For local database
-# postgres://scissorapp_4yk6_user:NaIg3nTMjPw2J5RSHhsrxgb5eaGgHZpd@dpg-cht7h5d269vccp3vt650-a.oregon-postgres.render.com/scissorapp_4yk6
 application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 application.config['SECRET_KEY']='d264032a74d1555a05942698'
 
