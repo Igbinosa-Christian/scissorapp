@@ -80,23 +80,25 @@
             <table class="table">
               <thead>
                 <tr>
-                    <th>Location</th>
-                    <th>Device</th>
-                    <th>Date and Time</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Device</th>
+                  <th scope="col">Date and Time</th>
                 </tr>
               </thead>
-            {% for data in visitData%}
+              {% for data in visitData %}
               <tbody>
                 <tr>
-                    <td>{{data.location}}</td>
-                    <td>{{data.device}}</td>
-                    <td>{{data.dateOfVisit}}</td>
+                  <td>{{data.location}}</td>
+    
+                  <td>
+                    {{data.device}}
+                  </td>
+
+                  <td>{{data.dateOfVisit}}</td>
                 </tr>
               </tbody>
+              {% endfor %}
             </table>
-
-
-            {% endfor %}
 
 
             <div class="text-center">
