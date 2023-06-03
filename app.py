@@ -350,6 +350,8 @@ def redirect_to_url(shortUrl):
     link.visits = link.visits + 1
     db.session.commit()
 
+    print(ip)
+
     
     return redirect(link.originalUrl) 
 
