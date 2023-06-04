@@ -16,6 +16,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from redis import Redis
 from user_agents import parse
+import validators
 
 
 
@@ -32,12 +33,12 @@ redis_client = Redis(host='red-chtkn45269vccp6lil8g', port=6379)
 
 # Limiter instance
 limiter = Limiter(
-    get_remote_address,
+    key_func=get_remote_address,
     app=application,
-    storage_uri="redis://red-chtkn45269vccp6lil8g:6379",
-    storage_options={
-        'connection_pool': redis_client.connection_pool
-    }
+    # storage_uri="redis://red-chtkn45269vccp6lil8g:6379",
+    # storage_options={
+    #     'connection_pool': redis_client.connection_pool
+    # }
 )
 
 
@@ -220,6 +221,7 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+# Function to generate random letters for short link
 def generate_short_link():
         characters = string.digits + string.ascii_letters
         shortUrl = ''.join(choices(characters, k=5))
@@ -235,7 +237,7 @@ def generate_short_link():
 # Dashboard page route
 @login_required
 @application.route('/dashboard/<string:username>', methods=['GET', 'POST'])
-@limiter.limit('10 per day')
+@limiter.limit('5 per hour')
 def dashboard(username):
 
     user = User.query.filter_by(username=username).first()
@@ -249,6 +251,14 @@ def dashboard(username):
 
     if request.method == 'POST':
         originalUrl = request.form.get('originalUrl')
+
+        # validate that originalUrl is a valid url
+        validateUrl = validators.url(originalUrl)
+        if not validateUrl:
+            flash(f"Url {originalUrl} is not a valid url.", category='error')
+            return redirect(url_for('dashboard', username=user.username))
+        
+
         customAlias = request.form.get('customAlias')
 
         # Decide on custom or random short url
