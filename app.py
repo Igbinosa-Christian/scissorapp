@@ -35,10 +35,10 @@ redis_client = Redis(host='red-chtkn45269vccp6lil8g', port=6379)
 limiter = Limiter(
     key_func=get_remote_address,
     app=application,
-    # storage_uri="redis://red-chtkn45269vccp6lil8g:6379",
-    # storage_options={
-    #     'connection_pool': redis_client.connection_pool
-    # }
+    storage_uri="redis://red-chtkn45269vccp6lil8g:6379",
+    storage_options={
+        'connection_pool': redis_client.connection_pool
+    }
 )
 
 
