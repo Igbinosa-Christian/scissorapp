@@ -107,6 +107,8 @@ class VisitLocation(db.Model):
 
 # Link Model
 class User(db.Model,UserMixin):
+    __tablename__ = 'users'
+
     id=db.Column(db.Integer(),primary_key=True)
     username=db.Column(db.String(150),unique=True,nullable=False)
     email=db.Column(db.String(200),unique=True,nullable=False)
@@ -237,7 +239,7 @@ def generate_short_link():
 # Dashboard page route
 @login_required
 @application.route('/dashboard/<string:username>', methods=['GET', 'POST'])
-@limiter.limit('5 per hour')
+@limiter.limit('10 per day', methods=['POST'])
 def dashboard(username):
 
     user = User.query.filter_by(username=username).first()
