@@ -71,7 +71,7 @@ Below is a description of each route and function in the application:
    - Purpose: Deletes a link and its associated visit statistics from the database by link ID. It verifies that the current user owns the link before deleting. After deletion, the user is redirected to their dashboard page.
 
 ## License
-Under [MIT](https://github.com/Igbinosa-Christian/scissorapp/blob/main/LICENSE.md)
+Under [MIT](https://github.com/Igbinosa-Christian/scissorapp/blob/main/LICENSE)
 
 ## Contact
 - [Twitter](https://twitter.com/_m_anor)
