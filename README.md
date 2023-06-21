@@ -76,4 +76,4 @@ Under [MIT](https://github.com/Igbinosa-Christian/scissorapp/blob/main/LICENSE.m
 ## Contact
 - [Twitter](https://twitter.com/_m_anor)
 - Email igbinosa62@gmail.com
-- [Project Repository](https://github.com/scissorapp.git)
+- [Project Repository](https://github.com/scissorapp)
