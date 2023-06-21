@@ -1,5 +1,6 @@
 import unittest
 from app import application, db, User, Link, VisitLocation
+from flask_login import LoginManager,login_user,logout_user,login_required,current_user,UserMixin
 
 class FlaskAppTestCase(unittest.TestCase):
     def setUp(self):
@@ -33,14 +34,16 @@ class FlaskAppTestCase(unittest.TestCase):
             username='testuser',
             password='password'
         ), follow_redirects=True)
-        
-        self.assertEqual(response.status_code, 200)
-        
 
-    # def test_logout_route(self):
-    #     response = self.app.get('/logout', follow_redirects=True)
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertIn(b'Welcome to the homepage', response.data)
+        self.assertEqual(response.status_code, 200)
+
+
+    def test_logout_route(self):
+        response = self.app.get('/logout', follow_redirects=True)
+
+        self.assertEqual(response.status_code, 200)
+
+        
 
 if __name__ == '__main__':
     unittest.main()

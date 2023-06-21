@@ -338,8 +338,9 @@ def redirect_to_url(shortUrl):
     location = printDetails(ip)
 
     # time link was visited
-    rawTime = datetime.now()
-    time = rawTime.strftime("%d/%m/%Y %H:%M:%S")
+    # rawTime = datetime.now()
+    time = datetime.now()
+    # time = rawTime.strftime("%d/%m/%Y %H:%M:%S")
 
     # device that visited link
     user_agent_string = request.headers.get('User-Agent')
